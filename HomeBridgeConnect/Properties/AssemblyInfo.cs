@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("HomeBridgeConnect")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Communicates to a http-switch on the HomeBridge.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("HomeBridgeConnect")]

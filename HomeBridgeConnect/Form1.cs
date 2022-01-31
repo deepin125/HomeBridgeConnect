@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Net.Http;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -43,7 +45,13 @@ namespace HomeBridgeConnect
         public Form1()
         {
             InitializeComponent();
-            Icon = Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            var assembly = Assembly.GetExecutingAssembly();//reflects the current executable
+            var resourceName = $"{this.GetType().Namespace}.Resources.{this.ProductName}.ico";
+            //Icon = Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            this.GetType().Assembly.GetManifestResourceNames();
+            Stream stream = assembly.GetManifestResourceStream(resourceName);
+            this.Icon = new Icon(stream);
+            
             components = new Container();
             contextMenu1 = new ContextMenu();
             menuItem1 = new MenuItem();
@@ -65,7 +73,7 @@ namespace HomeBridgeConnect
 
             // The Icon property sets the icon that will appear
             // in the systray for this application.
-            notifyIcon1.Icon = new Icon("homebridge.ico");
+            notifyIcon1.Icon = Icon;
 
             // The ContextMenu property sets the menu that will
             // appear when the systray icon is right clicked.
@@ -100,6 +108,10 @@ namespace HomeBridgeConnect
             textBox3.Text = Settings.Default.password;
 
             setup_power_handle();
+            Task.Run(() =>
+            {
+                post_http_request(true).Wait();
+            });
         }
 
         [DllImport("Powrprof.dll", SetLastError = true)]
@@ -118,6 +130,18 @@ namespace HomeBridgeConnect
         protected override void SetVisibleCore(bool value)
         {
             base.SetVisibleCore(allowshowdisplay ? value : allowshowdisplay);
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            Hide();
+            notifyIcon1.Text = "Shutting down program, sending off packet...";
+            PowerUnregisterSuspendResumeNotification(ref registrationHandle);
+            Task.Run(() =>
+            {
+                post_http_request(false).Wait();
+            });
+            base.OnClosed(e);
         }
 
 
@@ -148,12 +172,11 @@ namespace HomeBridgeConnect
 
         private static async Task<HttpResponseMessage> post_http_request(bool computerState)
         {
-            HttpResponseMessage HResultTask = new HttpResponseMessage();
-            var homebridgeIP = Settings.Default.HomeBridgeIPAddress;
+            var homebridgeIp = Settings.Default.HomeBridgeIPAddress;
 
             string url;
 
-            var json_pk = new Json_packet
+            var jsonPk = new Json_packet
             {
                 characteristic = "On",
                 value = computerState,
@@ -163,10 +186,10 @@ namespace HomeBridgeConnect
                 service = "switch-service"
             };
 
-            var json_serialized = JsonConvert.SerializeObject(json_pk, Formatting.Indented);
+            var jsonSerialized = JsonConvert.SerializeObject(jsonPk, Formatting.Indented);
 
-            url = Settings.Default.http_or_s + homebridgeIP + ":8080/" + json_pk.notificationID;
-            HResultTask = await client.PostAsync(url, new StringContent(json_serialized, Encoding.UTF8, "application/json"));
+            url = Settings.Default.http_or_s + homebridgeIp + ":8080/" + jsonPk.notificationID;
+            var HResultTask = await client.PostAsync(url, new StringContent(jsonSerialized, Encoding.UTF8, "application/json"));
 
             return HResultTask;
         }
@@ -225,7 +248,6 @@ namespace HomeBridgeConnect
         private void menuItem1_Click(object Sender, EventArgs e)
         {
             // Close the form, which closes the application.
-            PowerUnregisterSuspendResumeNotification(ref registrationHandle);
             Close();
         }
 
@@ -264,7 +286,7 @@ namespace HomeBridgeConnect
         {
             var key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
-            if (key == null) return;
+            ///if (key == null) return;
 
             if (checkBox3.Checked)
                 key.SetValue("HomeBridgeConnect.exe", Application.ExecutablePath);
