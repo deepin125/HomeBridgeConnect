@@ -3,13 +3,25 @@
   <Profiles />
   <Settings>
     <Setting Name="HomeBridgeIPAddress" Type="System.String" Scope="User">
-      <Value Profile="(Default)">192.168.86.35</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Wake_up_send" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Sleep_send" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="notificationID_value" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Auto_Start" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="http_or_s" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://</Value>
+    </Setting>
+    <Setting Name="password" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

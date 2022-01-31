@@ -25,7 +25,7 @@ namespace HomeBridgeConnect.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("192.168.86.35")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string HomeBridgeIPAddress {
             get {
                 return ((string)(this["HomeBridgeIPAddress"]));
@@ -56,6 +56,54 @@ namespace HomeBridgeConnect.Properties {
             }
             set {
                 this["Sleep_send"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string notificationID_value {
+            get {
+                return ((string)(this["notificationID_value"]));
+            }
+            set {
+                this["notificationID_value"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Auto_Start {
+            get {
+                return ((bool)(this["Auto_Start"]));
+            }
+            set {
+                this["Auto_Start"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://")]
+        public string http_or_s {
+            get {
+                return ((string)(this["http_or_s"]));
+            }
+            set {
+                this["http_or_s"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string password {
+            get {
+                return ((string)(this["password"]));
+            }
+            set {
+                this["password"] = value;
             }
         }
     }
