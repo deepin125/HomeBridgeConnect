@@ -45,9 +45,10 @@ namespace HomeBridgeConnect
         public Form1()
         {
             InitializeComponent();
+
+            //Icon setup from embedded
             var assembly = Assembly.GetExecutingAssembly();//reflects the current executable
             var resourceName = $"{this.GetType().Namespace}.Resources.{this.ProductName}.ico";
-            //Icon = Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
             this.GetType().Assembly.GetManifestResourceNames();
             Stream stream = assembly.GetManifestResourceStream(resourceName);
             this.Icon = new Icon(stream);
@@ -286,7 +287,7 @@ namespace HomeBridgeConnect
         {
             var key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
-            ///if (key == null) return;
+            if (key == null) return;
 
             if (checkBox3.Checked)
                 key.SetValue("HomeBridgeConnect.exe", Application.ExecutablePath);
