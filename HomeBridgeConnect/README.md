@@ -1,4 +1,4 @@
-#HomeBridge Connect
+# HomeBridgeConnect
 
 This program is designed to run in the background of Windows and listen for ACPI sleep/wake events using a callback on the power state in Windows. 
 When this occurs a POST packet is sent to the homebridge appliance, and will forward the event to the homebridge http switch.This allows you to monitor 
@@ -15,15 +15,15 @@ Make sure to setup HomeBridge with the prerequisites.
 
 *HomeBridge Prerequisites:*
 
-homebridge-http-switch is a plugin with which you can configure
+* homebridge-http-switch is a plugin with which you can configure
 HomeKit switches which forward any requests to a defined http server. This comes in handy when you already have home
 automated equipment which can be controlled via http requests. Or you have built your own equipment, for example some sort
 of lightning controlled with an wifi enabled Arduino board which than can be integrated via this plugin into Homebridge.
-homebridge-http-switch supports three different type of switches. A normal stateful switch and two variants of
+* homebridge-http-switch supports three different type of switches. A normal stateful switch and two variants of
 stateless switches (stateless and stateless-reverse) which differ in their original position. For stateless switches
 you can specify multiple urls to be targeted when the switch is turned On/Off.
 
-homebridge-http-notification-server is needed in order to receive
+* homebridge-http-notification-server is needed in order to receive
 updates when the state changes at your external program. For details on how to implement those updates and how to
 install and configure homebridge-http-notification-server, please refer to the
 README of the repository first.
