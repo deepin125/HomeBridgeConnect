@@ -10,8 +10,7 @@ Future development into waking/sleeping the computer using a listening event wit
 other accessories in homekit using my windows computer, however I haven't thought of a use case that I wouldn't just use Siri or my phone to do those things.
 
 *Compile/Install:*
-Compile code in VS, run application.  The application will appear in the notification tray.  Double click the Homebridge Icon to get the setup window. 
-Make sure to setup HomeBridge with the prerequisites.
+Compile code in VS using the Publish by right clicking HomeBridgeConnect->Properties->Publish. This will create an installer that the app will be installed under.  I have it pointed C:\temp, so you might want to make a folder there. Hit the "Publish Now", and the double click on the app installer package. If you ever get sick of the app, it can be uninstalled in the regular windows Remove Add or Remove Programs and Selecting the HomeBridgeConnect. Once installed, it will appear in the system tray, just double click the icon and fill in the data.
 
 *HomeBridge Prerequisites:*
 
