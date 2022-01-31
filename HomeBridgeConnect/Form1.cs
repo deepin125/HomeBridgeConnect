@@ -6,9 +6,9 @@ using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows;
 using HomeBridgeConnect.Properties;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -21,12 +21,10 @@ namespace HomeBridgeConnect
         private const int PBT_APMPOWERSTATUSCHANGE = 10; // (0xA) - Power status has changed.
 
         private const int
-            PBT_APMRESUMEAUTOMATIC =
-                18; // (0x12) - Operation is resuming automatically from a low-power state.This message is sent every time the system resumes.
+            PBT_APMRESUMEAUTOMATIC = 18; // (0x12) - Operation is resuming automatically from a low-power state.This message is sent every time the system resumes.
 
         private const int
-            PBT_APMRESUMESUSPEND =
-                7; // (0x7) - Operation is resuming from a low-power state.This message is sent after PBT_APMRESUMEAUTOMATIC if the resume is triggered by user input, such as pressing a key.
+            PBT_APMRESUMESUSPEND = 7; // (0x7) - Operation is resuming from a low-power state.This message is sent after PBT_APMRESUMEAUTOMATIC if the resume is triggered by user input, such as pressing a key.
 
         private const int PBT_APMSUSPEND = 4; // (0x4) - System is suspending operation.
         private const int PBT_POWERSETTINGCHANGE = 32787; // (0x8013) - A power setting change event has been received.
@@ -35,6 +33,7 @@ namespace HomeBridgeConnect
         private static readonly HttpClient client = new HttpClient();
         public static IntPtr registrationHandle;
         private static Task<HttpResponseMessage> _hResultTask;
+        private static bool startup = true;
 
         private bool TestSetup = false;
         private bool allowshowdisplay;
@@ -108,11 +107,17 @@ namespace HomeBridgeConnect
             comboBox1.Text = Settings.Default.http_or_s;
             textBox3.Text = Settings.Default.password;
 
+            
+
             setup_power_handle();
-            Task.Run(() =>
+            if (startup)
             {
-                post_http_request(true).Wait();
-            });
+                Task.Run(() =>
+                {
+                    post_http_request(true).Wait();
+                });
+                startup = false;
+            }
         }
 
         [DllImport("Powrprof.dll", SetLastError = true)]
@@ -122,10 +127,15 @@ namespace HomeBridgeConnect
         [DllImport("Powrprof.dll", SetLastError = true)]
         private static extern uint PowerUnregisterSuspendResumeNotification(ref IntPtr registrationHandle);
 
-        [STAThread]
-        private static void Run()
+        protected virtual void OnExit(ExitEventArgs e)
         {
-            Application.Run(new Form1());
+            Hide();
+            notifyIcon1.Text = "Shutting down program, sending off packet...";
+            PowerUnregisterSuspendResumeNotification(ref registrationHandle);
+            Task.Run(() =>
+            {
+                post_http_request(false).Wait();
+            });
         }
 
         protected override void SetVisibleCore(bool value)
@@ -249,7 +259,14 @@ namespace HomeBridgeConnect
         private void menuItem1_Click(object Sender, EventArgs e)
         {
             // Close the form, which closes the application.
-            Close();
+            Hide();
+            notifyIcon1.Text = "Shutting down program, sending off packet...";
+            PowerUnregisterSuspendResumeNotification(ref registrationHandle);
+            Task.Run(() =>
+            {
+                post_http_request(false).Wait();
+            });
+            this.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -269,10 +286,10 @@ namespace HomeBridgeConnect
                     _hResultTask = post_http_request(true);
                     while (!_hResultTask.IsCompleted)
                     {
-                        MessageBox.Show(string.Format("{0}", _hResultTask.Status.ToString()));
+                        System.Windows.Forms.MessageBox.Show(string.Format("{0}", _hResultTask.Status.ToString()));
                     }
 
-                    MessageBox.Show(String.Format("{0}", _hResultTask.Result.ToString()));
+                    System.Windows.Forms.MessageBox.Show(String.Format("{0}", _hResultTask.Result.ToString()));
                 });
                 return;
             }
@@ -290,7 +307,7 @@ namespace HomeBridgeConnect
             if (key == null) return;
 
             if (checkBox3.Checked)
-                key.SetValue("HomeBridgeConnect.exe", Application.ExecutablePath);
+                key.SetValue("HomeBridgeConnect.exe", System.Windows.Forms.Application.ExecutablePath);
             else
                 key.DeleteValue("HomeBridgeConnect.exe", false);
         }
