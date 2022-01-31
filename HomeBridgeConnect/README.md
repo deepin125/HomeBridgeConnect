@@ -1,4 +1,4 @@
-README.md
+#HomeBridge Connect
 
 This program is designed to run in the background of Windows and listen for ACPI sleep/wake events using a callback on the power state in Windows. 
 When this occurs a POST packet is sent to the homebridge appliance, and will forward the event to the homebridge http switch.This allows you to monitor 
