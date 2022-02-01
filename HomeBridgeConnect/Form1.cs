@@ -194,8 +194,8 @@ namespace HomeBridgeConnect
             try
             {
                 using (var client = new WebClient())
-                using (client.OpenRead(url))
-                    return true;
+                    using (client.OpenRead(url))
+                        return true;
             }
             catch
             {
