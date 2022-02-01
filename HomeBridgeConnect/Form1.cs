@@ -208,17 +208,17 @@ namespace HomeBridgeConnect
             var homebridgeIp = Settings.Default.HomeBridgeIPAddress;
             string url;
 
-            var jsonPk = new Json_packet
-            {
-                characteristic = "On",
-                value = computerState,
-                notificationID = Settings.Default.notificationID_value,
-                password = Settings.Default.password,
-                accessory = "HTTP-SWITCH",
-                service = "switch-service"
-            };
+                var jsonPk = new Json_packet
+                {
+                    characteristic = "On",
+                    value = computerState,
+                    notificationID = Settings.Default.notificationID_value,
+                    password = Settings.Default.password,
+                    accessory = "HTTP-SWITCH",
+                    service = "switch-service"
+                };
 
-            var jsonSerialized = JsonConvert.SerializeObject(jsonPk, Formatting.Indented);
+                var jsonSerialized = JsonConvert.SerializeObject(jsonPk, Formatting.Indented);
 
             url = Settings.Default.http_or_s + homebridgeIp + ":8080/" + jsonPk.notificationID;
             try
