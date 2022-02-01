@@ -58,7 +58,7 @@
             this.textBox1.Location = new System.Drawing.Point(207, 26);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(162, 20);
-            this.textBox1.TabIndex = 0;
+            this.textBox1.TabIndex = 1;
             this.textBox1.Text = "HomeBridge IP";
             // 
             // label1
@@ -76,7 +76,7 @@
             this.checkBox1.Location = new System.Drawing.Point(97, 107);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(144, 17);
-            this.checkBox1.TabIndex = 2;
+            this.checkBox1.TabIndex = 4;
             this.checkBox1.Text = "Send Message on Wake";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
@@ -86,7 +86,7 @@
             this.checkBox2.Location = new System.Drawing.Point(97, 130);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(142, 17);
-            this.checkBox2.TabIndex = 3;
+            this.checkBox2.TabIndex = 5;
             this.checkBox2.Text = "Send Message on Sleep";
             this.checkBox2.UseVisualStyleBackColor = true;
             // 
@@ -95,7 +95,7 @@
             this.button1.Location = new System.Drawing.Point(267, 188);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(102, 23);
-            this.button1.TabIndex = 4;
+            this.button1.TabIndex = 7;
             this.button1.Text = "Save Settings";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -114,7 +114,7 @@
             this.textBox2.Location = new System.Drawing.Point(137, 51);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(232, 20);
-            this.textBox2.TabIndex = 7;
+            this.textBox2.TabIndex = 2;
             // 
             // checkBox3
             // 
@@ -122,7 +122,7 @@
             this.checkBox3.Location = new System.Drawing.Point(97, 153);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(104, 17);
-            this.checkBox3.TabIndex = 8;
+            this.checkBox3.TabIndex = 6;
             this.checkBox3.Text = "Setup Auto-Start";
             this.checkBox3.UseVisualStyleBackColor = true;
             // 
@@ -132,7 +132,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.PasswordChar = '*';
             this.textBox3.Size = new System.Drawing.Size(232, 20);
-            this.textBox3.TabIndex = 9;
+            this.textBox3.TabIndex = 3;
             // 
             // label3
             // 
@@ -152,7 +152,7 @@
             this.comboBox1.Location = new System.Drawing.Point(138, 25);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(63, 21);
-            this.comboBox1.TabIndex = 11;
+            this.comboBox1.TabIndex = 0;
             // 
             // menuStrip1
             // 

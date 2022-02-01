@@ -12,6 +12,8 @@ using System.Windows;
 using HomeBridgeConnect.Properties;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using System.Net;
+using System.Threading;
 
 namespace HomeBridgeConnect
 {
@@ -110,10 +112,15 @@ namespace HomeBridgeConnect
             
 
             setup_power_handle();
-            if (startup)
+            if (startup && Settings.Default.HomeBridgeIPAddress != "")
             {
                 Task.Run(() =>
                 {
+
+                    while (!check_network_status())
+                    {
+                        Thread.Sleep(1000);
+                    }
                     post_http_request(true).Wait();
                 });
                 startup = false;
@@ -181,10 +188,24 @@ namespace HomeBridgeConnect
             Marshal.FreeHGlobal(pRecipient);
         }
 
+        private static bool check_network_status()
+        {
+            string url = Settings.Default.http_or_s + Settings.Default.HomeBridgeIPAddress;
+            try
+            {
+                using (var client = new WebClient())
+                using (client.OpenRead(url))
+                    return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private static async Task<HttpResponseMessage> post_http_request(bool computerState)
         {
             var homebridgeIp = Settings.Default.HomeBridgeIPAddress;
-
             string url;
 
             var jsonPk = new Json_packet
@@ -200,9 +221,18 @@ namespace HomeBridgeConnect
             var jsonSerialized = JsonConvert.SerializeObject(jsonPk, Formatting.Indented);
 
             url = Settings.Default.http_or_s + homebridgeIp + ":8080/" + jsonPk.notificationID;
-            var HResultTask = await client.PostAsync(url, new StringContent(jsonSerialized, Encoding.UTF8, "application/json"));
+            try
+            {
+                var HResultTask = await client.PostAsync(url, new StringContent(jsonSerialized, Encoding.UTF8, "application/json"));
 
-            return HResultTask;
+                return HResultTask;
+            }
+
+            catch
+            {
+                HttpResponseMessage result = new HttpResponseMessage();
+                return  result;
+            }
         }
 
         private static int DeviceNotifyCallback(IntPtr context, int type, IntPtr setting)
@@ -220,7 +250,14 @@ namespace HomeBridgeConnect
                 case PBT_APMRESUMEAUTOMATIC:
                     Console.WriteLine(
                         "\tOperation is resuming automatically from a low-power state.This message is sent every time the system resumes.");
-                    if (sendWake) _hResultTask = post_http_request(true);
+                    if (sendWake)
+                    {
+                        while (!check_network_status())
+                        {
+                            Thread.Sleep(1000);
+                        }
+                        _hResultTask = post_http_request(true);
+                    }
                     break;
                 case PBT_APMRESUMESUSPEND:
                     Console.WriteLine(
