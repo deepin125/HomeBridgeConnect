@@ -333,6 +333,7 @@ namespace HomeBridgeConnect
 
             auto_start_setup();
             Settings.Default.Save();
+            Settings.Default.Reload();
             _hResultTask = post_http_request(true);
             Hide();
         }
