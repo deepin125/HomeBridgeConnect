@@ -57,6 +57,8 @@ jobs:
 
     env:
       Solution_Name: HomeBridgeConnect.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
+      Wap_Project_Directory: HomeBridgeConnect.Package                       #
+      Wap_Project_Path: HomeBridgeConnect.Package\HomeBridgeConnect.Package.wapproj   #
 
     steps:
     - name: Checkout
