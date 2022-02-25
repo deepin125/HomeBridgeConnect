@@ -14,6 +14,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using System.Net;
 using System.Threading;
+using System.Windows.Media.Imaging;
 
 namespace HomeBridgeConnect
 {
@@ -75,7 +76,8 @@ namespace HomeBridgeConnect
 
             // The Icon property sets the icon that will appear
             // in the systray for this application.
-            notifyIcon1.Icon = Icon;
+
+            notifyIcon1.Icon = new Icon(assembly.GetManifestResourceStream(resourceName), SystemInformation.SmallIconSize);
 
             // The ContextMenu property sets the menu that will
             // appear when the systray icon is right clicked.
