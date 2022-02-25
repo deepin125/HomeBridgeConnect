@@ -57,7 +57,7 @@ jobs:
 
     env:
       Solution_Name: HomeBridgeConnect.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
-      Wap_Project_Directory: HomeBridgeConnect                     #
+      Wap_Project_Directory: HomeBridgeConnect/bin/$env:configuration #
       Wap_Project_Path: HomeBridgeConnect                          #
 
     steps:
@@ -91,7 +91,7 @@ jobs:
 
     # Create the app package by building and packaging the Windows Application Packaging project
     - name: Create the app package
-      run: msbuild $env:Wap_Project_Path /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
+      run: msbuild $env:/p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
         Appx_Bundle: Always
         Appx_Bundle_Platforms: x86|x64
